@@ -11,10 +11,12 @@ import acm.util.*;
 
 import java.awt.*;
 
+
 public class Hangman extends ConsoleProgram {
 
 	private String wordToGuess;
 	private String currentWord;
+
 	private HangmanCanvas canvas;
 
 	public void init() {
@@ -31,48 +33,44 @@ public class Hangman extends ConsoleProgram {
 		wordToGuess = lexicon.getWord(rgen.nextInt(lexicon.getWordCount()));
 		currentWord = dashifyWord();
 		boolean gameWon = false;
-		int numberOfGuessesLeft = 8;
+		int numberOfGuesesLeft = 8;
 		canvas.reset();
+		
 
-		while (!gameWon && (numberOfGuessesLeft > 0)) {
+		while (!gameWon && (numberOfGuesesLeft > 0)) {
 			canvas.displayWord(currentWord);
 			println("The word now looks like this: " + currentWord);
-			println("You have " + numberOfGuessesLeft + "guesses left.");
+			println("You have " + numberOfGuesesLeft + " guesses left.");
 			String guessInput = readLine("Your guess: ");
 			char guess;
-			if ((guessInput.length() == 0) || (guessInput.length() > 1)
+			if ((guessInput.length() == 0) 
+					|| (guessInput.length() > 1) 
 					|| !Character.isLetter(guess = guessInput.charAt(0))) {
-				println("Please enter single letter only!");
-				continue;
+				println("Please enter single letters only!");
+				continue;			
 			}
 			if (guessCorrect(guess)) {
-				println("That guess is correct");
+				println("That guess is correct.");
 				if (wordToGuess.equals(currentWord)) {
 					gameWon = true;
 				}
-			} else {
+			} else  {
 				canvas.noteIncorrectGuess(guess);
 				println("There are no " + guess + "'s in the word.");
-				numberOfGuessesLeft--;
-			}
+				numberOfGuesesLeft--;
+			}						
 		}
+
 		if (gameWon) {
-			println("You guessed the word " + wordToGuess);
-			println("You Win");
+			println("You guessed the word: " + wordToGuess);
+			println("You win.");			
 			canvas.displayWord(currentWord);
 		} else {
 			println("You are completely hung.");
 			println("The word was: " + wordToGuess);
 			println("You lose.");
 		}
-	}
 
-	private String dashifyWord() {
-		String result = "";
-		for (int i = 0; i < wordToGuess.length(); i++) {
-			result += "-";
-		}
-		return result;
 	}
 
 	private boolean guessCorrect(char guess) {
@@ -92,4 +90,13 @@ public class Hangman extends ConsoleProgram {
 		}
 		return guessCorrect;
 	}
+
+	private String dashifyWord() {
+		String result = "";
+		for(int i = 0 ; i < wordToGuess.length(); i++) {
+			result += "-";
+		}
+		return result;
+	}
+
 }
